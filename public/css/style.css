@@ -58,7 +58,7 @@
     color: #fff;
     border-left: 4px solid #EDDA31;
     padding: .3em;
-    width: 200px;
+    width: 250px;
 }
 .form-public h3{
     margin-top: 1em;
@@ -69,6 +69,17 @@
     padding: .3em;
     width: 450px;
     border-right: 3px solid #EDDA31;
+}
+
+.form-public h4{
+    margin-top: 1em;
+    font-size: medium;
+    margin-bottom: 1em;
+    color: #fff;
+    border: 3px solid #EDDA31;
+    padding: 1.5em;
+    width: 450px;
+    background-color:#898989;
 }
 .form-public a{
     color: #EDDA31;
