@@ -1,1 +1,28 @@
-<h1>Entre em contato:</h1>
+<div class="form-public">
+    <h2>Entrar em Contato</h2>
+    <form action="/contato" method="POST">
+        
+        <div class="form-control">
+           <label for="name">Nome:</label>
+           <input type="text" name="name" placeholder="Digite seu nome" required> 
+        </div>
+
+       <div class="form-control">
+           <label for="email">E-mail:</label>
+           <input type="email" name="email" placeholder="Digite seu e-mail" required> 
+        </div>
+
+        <div class="form-control">
+           <label for="assunto">Assunto:</label>
+           <input type="text" name="assunto" placeholder="Digite o assunto" required> 
+        </div>
+
+        <div class="form-control">
+           <label for="mensagem">Mensagem:</label>
+           <textarea name="mensagem" cols="30" rows="10" placeholder="Digite a mensagem que gostaria de enviar para o desenolvedor." required></textarea>
+        </div>
+        
+        <input type="submit" value="Enviar">
+            
+    </form>
+</div>
