@@ -1,0 +1,15 @@
+{
+  "name": "projeto-web2",
+  "version": "1.0.0",
+  "description": "Projeto criado para a disciplina de Programação Web 2 da UTFPR-CP.\r  Descrição do projeto:\r  Uma aplicação web que permite aos usuários adotar ou colocar um pet para adoção.\r  ## 🧪 Tecnologias",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
+  }
+}
