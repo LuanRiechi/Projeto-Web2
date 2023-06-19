@@ -1,1 +1,19 @@
-<h1>Home Page</h1>
+<div class="form-public">
+    <h2>Faça o login</h2>
+    <form action="/login" method="POST">
+        <div class="form-control">
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" placeholder="Digite seu e-mail" required> 
+        </div>
+
+        <div class="form-control">
+            <label for="password">Senha:</label>
+            <input type="password" name="password" placeholder="Digite a sua senha" required> 
+        </div>
+
+        <input type="submit" value="Entrar">
+        
+        <p>Não tem conta? <a href="/registrar">Clique aqui!</a></p>
+    </form>
+    <h3>Uma aplicação web que permite aos usuários adotar ou colocar um pet para adoção.</h3>
+</div>
