@@ -51,7 +51,7 @@ router.post('/contato',(req,res)=>{
     }
     let detalhesEmail ={
         from: `PETSCP <${process.env.EMAIL_USER}>`,
-        to: 'leleco12_@hotmail.com',
+        to: process.env.EMAIL_FINAL,
         subject: assunto,
         text: mensagem +"\n"+"usuario: " + name + "\n"+"E-mail: " + email
     }
