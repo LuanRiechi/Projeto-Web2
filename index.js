@@ -1,5 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+require('dotenv').config()
 
 const publicRoutes = require('./routes/publicRoutes')
 
