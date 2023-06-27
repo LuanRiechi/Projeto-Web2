@@ -185,4 +185,19 @@ module.exports = class UserController {
     }
   }
 
+  static async removeUser(req,res){
+
+    const token = getToken(req)
+
+    const user = await getUserByToken(token)
+
+    if(!user){
+      res.status(404).json({ status: false, mensagem: 'Usuario nao existe' })
+      return
+    }
+
+    await User.findByIdAndRemove(user._id)
+    res.status(200).json({ status: true, mensagem:"usuario deletado com sucesso" })
+  }
+
 }

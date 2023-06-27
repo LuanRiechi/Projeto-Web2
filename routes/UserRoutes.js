@@ -12,4 +12,6 @@ router.patch(
     UserController.editUser
   );
 
+router.delete("/delete",verifyToken, UserController.removeUser)
+
 module.exports = router;
