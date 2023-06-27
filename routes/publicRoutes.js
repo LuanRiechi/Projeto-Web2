@@ -38,16 +38,16 @@ let mailTransport = nodemailer.createTransport({
 router.post('/contato',(req,res)=>{
     const {name,email,assunto,mensagem} = req.body
     if(!name){
-        res.json({erro: true, mensagem:"Sem nome do usuario"})
+        res.json({status: false, mensagem:"Sem nome do usuario"})
     }
     if(!email){
-        res.json({erro: true, mensagem:"Sem email do usuario"})
+        res.json({status: false, mensagem:"Sem email do usuario"})
     }
     if(!assunto){
-        res.json({erro: true, mensagem:"Assunto nao informado"})
+        res.json({status: false, mensagem:"Assunto nao informado"})
     }
     if(!mensagem){
-        res.json({erro: true, mensagem:"Mensagem nao informada"})
+        res.json({status: false, mensagem:"Mensagem nao informada"})
     }
     let detalhesEmail ={
         from: `PETSCP <${process.env.EMAIL_USER}>`,
@@ -58,7 +58,7 @@ router.post('/contato',(req,res)=>{
 
     mailTransport.sendMail(detalhesEmail, function(err,data){
         if(err){
-            res.json({erro: true, mensagem:"erro no envio de email"})
+            res.json({status: false, mensagem:"erro no envio de email"})
         }else{
             res.redirect('/')
         }
