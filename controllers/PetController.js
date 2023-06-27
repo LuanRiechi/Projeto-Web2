@@ -56,4 +56,13 @@ module.exports = class PetController {
     }
   }
 
+  // buscando todos os pets registrados no sistema
+  static async getAll(req, res) {
+    const pets = await Pet.find()
+
+    res.status(200).json({
+      pets: pets,
+    })
+  }
+
 }
