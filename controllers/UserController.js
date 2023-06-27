@@ -5,6 +5,8 @@ const User = require('../models/User')
 
 //helpers
 const createUserToken = require('../helpers/create-user-token')
+const getUserByToken = require('../helpers/get-user-by-token')
+const getToken = require('../helpers/get-token')
 const ObjectId = require('mongoose').Types.ObjectId
 
 
@@ -121,6 +123,66 @@ module.exports = class UserController {
     }
 
     res.status(200).json({status: true, user })
+  }
+
+  static async editUser(req, res) {
+    const token = getToken(req)
+
+    const user = await getUserByToken(token)
+
+    const{name,email,password,confirmpassword} = req.body
+
+    // validações
+    if (!name) {
+      res.status(422).json({ status: false, mensagem: 'O nome é obrigatório!' })
+      return
+    }
+
+    user.name = name
+
+    if (!email) {
+      res.status(422).json({ status: false, mensagem: 'O e-mail é obrigatório!' })
+      return
+    }
+
+    // verificando se usuario existe
+    const userExists = await User.findOne({ email: email })
+
+    if (user.email !== email && userExists) {
+      res.status(422).json({ status: false, mensagem: 'Por favor, utilize outro e-mail!' })
+      return
+    }
+
+    user.email = email
+
+    // verificando se a senha confere
+    if (password != confirmpassword) {
+      res.status(422).json({ status: false, mensagem: 'As senhas não conferem.' })
+      return
+
+    } else if (password == confirmpassword && password != null) {
+      // criando a senha
+      const salt = await bcrypt.genSalt(12)
+      const reqPassword = req.body.password
+
+      const passwordHash = await bcrypt.hash(reqPassword, salt)
+
+      user.password = passwordHash
+    }
+
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $set: user },
+        { new: true },
+      )
+      res.status(200).json({
+        status: true,
+        data: updatedUser,
+      })
+    } catch (error) {
+      res.status(500).json({ status: false, mensagem: error })
+    }
   }
 
 }
