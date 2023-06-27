@@ -14,7 +14,8 @@ const getPetsUser = require('../helpers/check-user-has-pet')
 module.exports = class UserController {
   static async register(req, res) {
 
-    const{name,email,password,confirmpassword} = req.body
+    const {name,email,password,confirmpassword} = req.body
+    let contador = 0;
 
     // validações
     if (!name) {
@@ -62,6 +63,7 @@ module.exports = class UserController {
       name: name,
       email: email,
       password: passwordHash,
+      contador: contador,
     })
 
     try {
@@ -101,8 +103,17 @@ module.exports = class UserController {
     if (!checkPassword) {
       return res.status(422).json({ status: false, mensagem: 'Senha inválida' })
     }
-
-    await createUserToken(user, req, res)
+    user.contador++;
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $set: user },
+        { new: true },
+      )
+      await createUserToken(updatedUser, req, res)
+    } catch (error) {
+      res.status(500).json({ status: false, mensagem: error })
+    }
   }
 
   static async getUserById(req, res) {
@@ -196,7 +207,7 @@ module.exports = class UserController {
       res.status(404).json({ status: false, mensagem: 'Usuario nao existe' })
       return
     }
-
+    //verifica se o usuario tem algum pet cadastrado.
     const userPets = await getPetsUser(token)
     if(userPets){
       res.status(404).json({ status: false, mensagem: 'Não é possivel deletar usuario com pet cadastrado!' })

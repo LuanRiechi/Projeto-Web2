@@ -13,6 +13,7 @@ const createUserToken = async (user, req, res) => {
     status: true,
     token: token,
     userId: user._id,
+    contador: user.contador
   });
 };
 

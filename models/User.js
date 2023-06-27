@@ -16,6 +16,9 @@ const User = mongoose.model(
       type: String,
       required: true,
     },
+    contador:{
+      type: Number,
+    }
   },),
 )
 
