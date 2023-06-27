@@ -5,6 +5,7 @@ const User = require('../models/User')
 
 //helpers
 const createUserToken = require('../helpers/create-user-token')
+const ObjectId = require('mongoose').Types.ObjectId
 
 
 module.exports = class UserController {
@@ -99,6 +100,27 @@ module.exports = class UserController {
     }
 
     await createUserToken(user, req, res)
+  }
+
+  static async getUserById(req, res) {
+    const id = req.params.id
+    if(!id){
+      return res.status(422).json({ status: false, mensagem: 'Id invalido' })
+    }
+
+    if (!ObjectId.isValid(id)) {
+      res.status(422).json({ status: false, mensagem: 'ID inválido!' })
+      return
+    }
+
+    const user = await User.findById(id)
+
+    if (!user) {
+      res.status(422).json({ status: false, mensagem: 'Usuário não encontrado!' })
+      return
+    }
+
+    res.status(200).json({status: true, user })
   }
 
 }
