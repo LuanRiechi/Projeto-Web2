@@ -61,6 +61,7 @@ module.exports = class PetController {
     const pets = await Pet.find()
 
     res.status(200).json({
+      status: true,  
       pets: pets,
     })
   }
@@ -73,8 +74,33 @@ module.exports = class PetController {
     const pets = await Pet.find({ 'user._id': user._id })
 
     res.status(200).json({
+      status: true,  
       pets,
     })
   }
+
+    // buscando um pet por id
+    static async getPetById(req, res) {
+        const id = req.params.id
+    
+        // verificando se o id é valido
+        if (!ObjectId.isValid(id)) {
+          res.status(422).json({ status: false, mensagem: 'ID inválido!' })
+          return
+        }
+    
+        // verificando se o pet existe
+        const pet = await Pet.findOne({ _id: id })
+    
+        if (!pet) {
+          res.status(404).json({ status: false, mensagem: 'Pet não encontrado!' })
+          return
+        }
+    
+        res.status(200).json({
+          status: true,  
+          pet: pet,
+        })
+      }
 
 }
