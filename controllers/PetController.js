@@ -103,15 +103,15 @@ module.exports = class PetController {
         })
     }
 
-
+    //removendo um pet
     static async removePetById(req, res) {
         const id = req.params.id
-    
+        //verificando se o id é valido
         if (!ObjectId.isValid(id)) {
           res.status(422).json({ status: false, mensagem: 'ID inválido!' })
           return
         }
-    
+        //verificando se o pet existe
         const pet = await Pet.findOne({ _id: id })
     
         if (!pet) {
@@ -130,10 +130,78 @@ module.exports = class PetController {
           })
           return
         }
-    
+        //removendo pet por id
         await Pet.findByIdAndRemove(id)
     
         res.status(200).json({ status: true, mensagem: 'Pet removido com sucesso!' })
+    }
+    //editando um pet
+    static async updatePet(req, res) {
+
+        const id = req.params.id
+        const {name,age,description,color,available} = req.body
+    
+        const updateData = {}
+        
+        //verificando se o id é valido
+        if (!ObjectId.isValid(id)) {
+            res.status(422).json({ status: false, mensagem: 'ID inválido!' })
+            return
+         }
+        //verificando se o pet existe
+        const pet = await Pet.findOne({ _id: id })
+    
+        if (!pet) {
+          res.status(404).json({ status: false, mensagem: 'Pet não encontrado!' })
+          return
+        }
+        // verificando se o usuario logado foi o mesmo que registrou o pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+    
+        if (pet.user._id.toString() != user._id.toString()) {
+          res.status(404).json({
+            status: false, mensagem:
+              'Houve um problema em processar sua solicitação, tente novamente mais tarde!',
+          })
+          return
+        }
+        //validações
+        if (!name) {
+          res.status(422).json({ status: false, mensagem: 'O nome é obrigatório!' })
+          return
+        } else {
+          updateData.name = name
+        }
+    
+        if (!age) {
+          res.status(422).json({ status: false, mensagem: 'A idade é obrigatória!' })
+          return
+        } else {
+          updateData.age = age
+        }
+    
+    
+        if (!color) {
+          res.status(422).json({ status: false, mensagem: 'A cor é obrigatória!' })
+          return
+        } else {
+          updateData.color = color
+        }
+    
+    
+        if (!available) {
+          res.status(422).json({ status: false, mensagem: 'O status é obrigatório!' })
+          return
+        } else {
+          updateData.available = available
+        }
+    
+        updateData.description = description
+    
+        await Pet.findByIdAndUpdate(id, updateData)
+    
+        res.status(200).json({ status: true, pet: pet })
     }
 
 }
