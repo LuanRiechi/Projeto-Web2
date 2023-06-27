@@ -8,6 +8,7 @@ const createUserToken = require('../helpers/create-user-token')
 const getUserByToken = require('../helpers/get-user-by-token')
 const getToken = require('../helpers/get-token')
 const ObjectId = require('mongoose').Types.ObjectId
+const getPetsUser = require('../helpers/check-user-has-pet')
 
 
 module.exports = class UserController {
@@ -196,8 +197,14 @@ module.exports = class UserController {
       return
     }
 
+    const userPets = await getPetsUser(token)
+    if(userPets){
+      res.status(404).json({ status: false, mensagem: 'Não é possivel deletar usuario com pet cadastrado!' })
+      return
+    }
+    
     await User.findByIdAndRemove(user._id)
-    res.status(200).json({ status: true, mensagem:"usuario deletado com sucesso" })
+    res.status(200).json({ status: true, mensagem:"usuario deletado com sucesso"})
   }
 
 }
