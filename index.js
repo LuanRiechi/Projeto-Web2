@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 require('dotenv').config()
 
 const publicRoutes = require('./routes/publicRoutes')
+const UserRoutes = require('./routes/UserRoutes')
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 app.use('/', publicRoutes)
+app.use('/users', UserRoutes)
 
 app.listen(3000, ()=>{
     console.log("Servidor ON")
